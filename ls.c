@@ -14,7 +14,9 @@ int main(int argc,char* argv[]){
 		printf("can not open %s\n",argv[1]);
 	}
 	while((dirp=readdir(dp))!=NULL){
-		printf("%s\n",dirp->d_name );
+        char* d_name = dirp->d_name;
+		if(d_name[0]=='.')continue;
+        printf("%s\n",d_name);
 	}
 
 	closedir(dp);
