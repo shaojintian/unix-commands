@@ -1,26 +1,41 @@
 #include <dirent.h>
 #include <stdio.h>
-
+void do_ls(int argc, char* target_dp);
 //ls directory_name 
 //char* = string 
 int main(int argc,char* argv[]){
-	if(argc!=2){
-		printf("usage:./ls directory_name\n");
-		return 0;
-	}
-	DIR*			dp;
+    if(argc==1){
+        do_ls(argc,".");
+        return 0;
+    }else if(argc==2){
+        //argc==2
+	    do_ls(argc,argv[1]);
+        return 0;
+    }
+    //argc>=3
+	//printf("usage:./ls directory_name...\n");
+    for (size_t i = 1; i <argc ; i++){
+        printf("%s:\n",argv[i]);
+        do_ls(argc,argv[i]);
+    }
+    return 0;        
+}
+
+void do_ls(int argc,char* target_dp){
+    DIR*			dp;
 	struct dirent*	dirp;
-	if((dp=opendir(argv[1]))==NULL){
-		printf("can not open %s\n",argv[1]);
+    
+    if((dp=opendir(target_dp))==NULL){
+		printf("can not open %s\n",target_dp);
+        return;
 	}
 	while((dirp=readdir(dp))!=NULL){
         char* d_name = dirp->d_name;
 		if(d_name[0]=='.')continue;
         printf("%s\n",d_name);
 	}
-
+    //printf("\n");
 	closedir(dp);
-	return 0;
 }
 
 
